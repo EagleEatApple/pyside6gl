@@ -1,5 +1,11 @@
+# import standard library
+
+# import third party library
 from OpenGL.GL import *
 import numpy
+
+# import local library
+
 
 class Attribute(object):
 
@@ -18,8 +24,8 @@ class Attribute(object):
         # upload data immediately
         self.uploadData()
 
-
     # upload this data to a GPU buffer
+
     def uploadData(self):
 
         # convert data to numpy array format;
@@ -58,8 +64,8 @@ class Attribute(object):
         elif self.dataType == "vec4":
             glVertexAttribPointer(variableRef, 4, GL_FLOAT, False, 0, None)
         else:
-            raise Exception("Attribute " + variableName + 
-                " has unknown type " + self.dataType)
+            raise Exception("Attribute " + variableName +
+                            " has unknown type " + self.dataType)
 
         # indicate that data will be streamed to thhis variable
         glEnableVertexAttribArray(variableRef)

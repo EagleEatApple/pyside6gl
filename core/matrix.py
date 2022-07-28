@@ -1,5 +1,11 @@
-import numpy
+# import standard library
 from math import sin, cos, tan, pi
+
+# import third party library
+
+import numpy
+# import local library
+
 
 class Matrix(object):
 
@@ -12,10 +18,10 @@ class Matrix(object):
 
     @staticmethod
     def makeTranslation(x, y, z):
-        return numpy.array( [[1, 0, 0, x],
-                             [0, 1, 0, y],
-                             [0, 0, 1, z],
-                             [0, 0, 0, 1]]).astype(float)
+        return numpy.array([[1, 0, 0, x],
+                            [0, 1, 0, y],
+                            [0, 0, 1, z],
+                            [0, 0, 0, 1]]).astype(float)
 
     @staticmethod
     def makeRotationX(angle):
@@ -30,10 +36,10 @@ class Matrix(object):
     def makeRotationY(angle):
         c = cos(angle)
         s = sin(angle)
-        return numpy.array([[ c, 0, s, 0],
-                            [ 0, 1, 0, 0],
+        return numpy.array([[c, 0, s, 0],
+                            [0, 1, 0, 0],
                             [-s, 0, c, 0],
-                            [ 0, 0, 0, 1]]).astype(float)
+                            [0, 0, 0, 1]]).astype(float)
 
     @staticmethod
     def makeRotationZ(angle):
@@ -52,13 +58,13 @@ class Matrix(object):
                             [0, 0, 0, 1]]).astype(float)
 
     @staticmethod
-    def makePersepctive(angleOfView = 60, aspectRatio = 1, near = 0.1, far = 1000):
+    def makePersepctive(angleOfView=60, aspectRatio=1, near=0.1, far=1000):
         a = angleOfView * pi / 180.0
         d = 1.0 / tan(a / 2)
         r = aspectRatio
         b = (far + near) / (near - far)
         c = 2 * far * near / (near - far)
         return numpy.array([[d/r, 0,  0, 0],
-                            [  0, d,  0, 0],
-                            [  0, 0,  b, c],
-                            [  0, 0, -1, 0]]).astype(float)
+                            [0, d,  0, 0],
+                            [0, 0,  b, c],
+                            [0, 0, -1, 0]]).astype(float)

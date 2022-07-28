@@ -1,4 +1,10 @@
+# import standard library
+
+# import third party library
 from OpenGL.GL import *
+
+# import local library
+
 
 class Uniform(object):
 
@@ -14,8 +20,8 @@ class Uniform(object):
         # reference for variable location in program
         self.variableRef = None
 
-
     # get and store reference for program variable with given name
+
     def locateVariable(self, programeRef, variableName):
         self.variableRef = glGetUniformLocation(programeRef, variableName)
 
@@ -35,9 +41,11 @@ class Uniform(object):
         elif self.dataType == "vec2":
             glUniform2f(self.variableRef, self.data[0], self.data[1])
         elif self.dataType == "vec3":
-            glUniform3f(self.variableRef, self.data[0], self.data[1], self.data[2])
+            glUniform3f(self.variableRef,
+                        self.data[0], self.data[1], self.data[2])
         elif self.dataType == "vec4":
-            glUniform4f(self.variableRef, self.data[0], self.data[1], self.data[2], self.data[3])
+            glUniform4f(self.variableRef,
+                        self.data[0], self.data[1], self.data[2], self.data[3])
         elif self.dataType == "mat4":
             glUniformMatrix4fv(self.variableRef, 1, GL_TRUE, self.data)
         else:

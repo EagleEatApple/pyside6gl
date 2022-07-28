@@ -1,61 +1,56 @@
+# import standard library
 import sys
-from OpenGL import GL as gl
-from PySide6.QtWidgets import QApplication
-from PySide6.QtOpenGLWidgets import QOpenGLWidget
-from PySide6.QtGui import QSurfaceFormat
-from PySide6.QtCore import QTimer
-from core.OpenGLUtils import OpenGLUtils
+from math import sin, cos
+
+# import third party library
+from OpenGL.GL import *
+
+# import local library
+from core.base import Base, baseApp
+from core.openGLUtils import OpenGLUtils
 from core.attribute import Attribute
 from core.uniform import Uniform
-from math import sin, cos
-import time
 
-### initialize program ###
-# vertex shader code
-vsCode = """
-in vec3 position;
-uniform vec3 translation;
-void main()
-{
-    vec3 pos = position + translation;
-    gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
-}
-"""
 
-# fragment shader code
-fsCode = """
-uniform vec3 baseColor;
-out vec4 fragColor;
-void main()
-{
-    fragColor = vec4(baseColor.r, baseColor.g, baseColor.b, 1.0);
-}
-"""
-
-# animate the color shifting of the triangle 
-class Test(QOpenGLWidget):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("Graphics Window")
-        self.setFixedSize(512, 512)
-        self.timer = QTimer(self)
-        self.timer.timeout.connect(self.update)
-        self.timer.start(20)
-        self.time = 0
+# animate the color shifting of the triangle
+class Test(Base):
+    def __init__(self, screenSize=[512, 512], title=""):
+        super().__init__(screenSize, title)
 
     def initializeGL(self):
-        print ("Initializing program...")
-        self.last_time = time.time()
+        super().initializeGL()
+
+        ### initialize program ###
+        vsCode = """
+        in vec3 position;
+        uniform vec3 translation;
+        void main()
+        {
+            vec3 pos = position + translation;
+            gl_Position = vec4(pos.x, pos.y, pos.z, 1.0);
+        }
+        """
+
+        fsCode = """
+        uniform vec3 baseColor;
+        out vec4 fragColor;
+        void main()
+        {
+            fragColor = vec4(baseColor.r, baseColor.g, baseColor.b, 1.0);
+        }
+        """
 
         # send code to GPU and compile; store program reference
         self.programRef = OpenGLUtils.initializeProgram(vsCode, fsCode)
 
         ### render settings (optional) ###
-        gl.glClearColor(0.0, 0.0, 0.0, 1.0)
-        
+
+        # specify color used when clearly
+        glClearColor(0.0, 0.0, 0.0, 1.0)
+
         ### set up vertex array object ###
-        self.vaoRef = gl.glGenVertexArrays(1)
-        gl.glBindVertexArray(self.vaoRef)
+        self.vaoRef = glGenVertexArrays(1)
+        glBindVertexArray(self.vaoRef)
 
         ### set up vertex attributes ###
         self.positionData = [[0.0, 0.2, 0.0], [0.2, -0.2, 0.0],
@@ -71,44 +66,32 @@ class Test(QOpenGLWidget):
         self.baseColor.locateVariable(self.programRef, "baseColor")
 
     def paintGL(self):
-        ### update data ###
-        # seconds since iteration of run loop
-        self.deltaTime = time.time() - self.last_time
+        super().paintGL()
 
-        # increment time application has been running
-        self.time += self.deltaTime
-        #self.baseColor.data[0] = (sin(3 * (self.time)) + 1) / 2
+        ### update data ###
+
+        # self.baseColor.data[0] = (sin(3 * (self.time)) + 1) / 2
         self.baseColor.data[0] = (sin(3 * (self.time)) + 1) / 2
         self.baseColor.data[1] = (sin(3 * (self.time)) + 2.1) / 2
         self.baseColor.data[2] = (sin(3 * (self.time)) + 4.2) / 2
 
-
         ### render scene ###
         # reset color buffer with specified color
-        gl.glClear(gl.GL_COLOR_BUFFER_BIT)
- 
+        glClear(GL_COLOR_BUFFER_BIT)
 
         # using same program to render both shapes
-        gl.glUseProgram(self.programRef)
+        glUseProgram(self.programRef)
         self.translation.uploadData()
         self.baseColor.uploadData()
-        gl.glDrawArrays(gl.GL_TRIANGLES, 0, self.vertexCount)
-        self.last_time = time.time()
+        glDrawArrays(GL_TRIANGLES, 0, self.vertexCount)
 
-        
+
 def main():
-    app = QApplication(sys.argv)
-
-    format = QSurfaceFormat()
-    format.setDepthBufferSize(24)
-    format.setVersion(3, 3)
-    format.setProfile(QSurfaceFormat.CoreProfile)
-    QSurfaceFormat.setDefaultFormat(format)
-
-    window = Test()
+    app = baseApp(sys.argv)
+    window = Test(title="Test-2-9")
     window.show()
     sys.exit(app.exec())
 
+
 if __name__ == '__main__':
     main()
-
