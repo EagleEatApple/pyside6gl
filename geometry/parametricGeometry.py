@@ -10,7 +10,8 @@ class ParametricGeometry(Geometry):
 
     def __init__(self, uStart, uEnd, uResolution,
                  vStart, vEnd, vResolution, surfaceFunction):
-
+        super().__init__()
+        
         # generate set of points on  function
         deltaU = (uEnd - uStart) / uResolution
         deltaV = (vEnd - vStart) / vResolution
