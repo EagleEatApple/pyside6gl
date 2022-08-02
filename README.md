@@ -20,7 +20,7 @@ All images come from Professor Lee Stemkoski's another [repo](https://github.com
 
 ## Change Log
 
-### `2027-08-2`
+### `2022-08-02`
 
 Continue to refine the code and take screenshots
 
@@ -47,7 +47,7 @@ However, I could not make Test-5-12.py to work after replace Pygame by Pillow.
 ![screenshot](./screenshot/Test-5-11.png)
 
 
-### `2027-07-28`
+### `2022-07-28`
 
 Refine the code and take screenshots
 
@@ -73,7 +73,7 @@ Upload more folders and all source code in Chapter 2, Chapter 3 and Chapter 4
 ![screenshot](./screenshot/Test-4-6.png)
 ![screenshot](./screenshot/Test-4-6-1.png)
 
-### `2027-07-26`
+### `2022-07-26`
 
 Upload core folders and all source code in Chapter 2 and Chapter 3
 
