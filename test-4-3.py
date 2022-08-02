@@ -24,7 +24,7 @@ class Test(Base):
     def initializeGL(self):
         super().initializeGL()
 
-        self.renderer = Renderer()
+        self.renderer = Renderer(self)
         self.scene = Scene()
         self.camera = Camera(aspectRatio=800 / 600)
         self.camera.setPosition([0, 0, 4])

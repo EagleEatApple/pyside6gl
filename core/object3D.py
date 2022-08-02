@@ -90,3 +90,7 @@ class Object3D(object):
         self.transform.itemset((0, 3), position[0])
         self.transform.itemset((1, 3), position[1])
         self.transform.itemset((2, 3), position[2])
+
+    def lookAt(self, targetPosition):
+        self.transform = Matrix.makeLookAt(
+            self.getWorldPosition(), targetPosition)

@@ -9,7 +9,7 @@ from material.lineMaterial import LineMaterial
 
 
 class GridHelper(Mesh):
-    def __init__(self, size=10, divisions=10, gridColor=[0, 0, 0],
+    def __init__(self, size=10, divisions=10, gridColor=[1, 1, 1],
                  centerColor=[0.5, 0.5, 0.5], lineWidth=1):
         geo = Geometry()
         positionData = []

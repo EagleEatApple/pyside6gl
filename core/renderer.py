@@ -8,16 +8,33 @@ from core.mesh import Mesh
 
 
 class Renderer(object):
-    def __init__(self, clearColor=[0, 0, 0]):
+    def __init__(self, widget, clearColor=[0, 0, 0]):
         glEnable(GL_DEPTH_TEST)
         # required for antialiasing
         glEnable(GL_MULTISAMPLE)
         glClearColor(clearColor[0], clearColor[1], clearColor[2], 1)
 
-    def render(self, scene, camera):
+        glEnable(GL_BLEND)
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        self.windowSize = widget.size().toTuple()
+
+    def render(self, scene, camera, clearColor=True, clearDepth=True, renderTarget=None):
+        # activate render target
+        #print(self.windowSize)
+        if renderTarget == None:
+            # set render target to window
+            #glBindFramebuffer(GL_FRAMEBUFFER, 0)
+            glViewport(0, 0, self.windowSize[0], self.windowSize[1])
+        else:
+            # set render target properties
+            glBindFramebuffer(GL_FRAMEBUFFER, renderTarget.framebufferRef)
+            glViewport(0, 0, renderTarget.width, renderTarget.height)
 
         # clear color and depth buffers
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        if clearColor:
+            glClear(GL_COLOR_BUFFER_BIT)
+        if clearDepth:
+            glClear(GL_DEPTH_BUFFER_BIT)
 
         # Update camera view (calculate inverse)
         camera.updateViewMatrix()

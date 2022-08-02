@@ -10,6 +10,7 @@ from PySide6.QtCore import QTimer
 from OpenGL.GL import *
 
 # import local library
+from core.input import Input
 
 
 class Base(QOpenGLWidget):
@@ -22,6 +23,7 @@ class Base(QOpenGLWidget):
         self.timer.timeout.connect(self.update)
         self.timer.start(20)
         self.time = 0
+        self.input = Input()
 
     def initializeGL(self):
         self.last_time = time.time()
@@ -31,6 +33,15 @@ class Base(QOpenGLWidget):
         self.deltaTime = time.time() - self.last_time
         self.time += self.deltaTime
         self.last_time = time.time()
+        self.input.update()
+
+    def keyPressEvent(self, event):
+        self.input.receiveKeyEvent(event.key(), event.type())
+        self.update()
+
+    def keyReleaseEvent(self, event):
+        self.input.receiveKeyEvent(event.key(), event.type())
+        self.update() 
 
 
 class baseApp(QApplication):
