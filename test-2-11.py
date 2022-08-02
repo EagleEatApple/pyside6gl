@@ -10,7 +10,7 @@ from core.base import Base, baseApp
 from core.openGLUtils import OpenGLUtils
 from core.attribute import Attribute
 from core.uniform import Uniform
-from core.input import Input
+
 
 
 # animate triangle moving across screen
@@ -18,7 +18,7 @@ class Test(Base):
     def __init__(self, screenSize=[512, 512], title=""):
         super().__init__(screenSize, title)
         self.timer.stop()
-        self.input = Input()
+
 
     def initializeGL(self):
         super().initializeGL()
@@ -72,7 +72,7 @@ class Test(Base):
 
     def paintGL(self):
         super().paintGL()
-        self.input.update()
+
         ### update data ###
 
         # distance = self.speed * self.deltaTime
@@ -96,13 +96,7 @@ class Test(Base):
         self.baseColor.uploadData()
         glDrawArrays(GL_TRIANGLES, 0, self.vertexCount)
 
-    def keyPressEvent(self, event):
-        self.input.receiveKeyEvent(event.key(), event.type())
-        self.update()
 
-    def keyReleaseEvent(self, event):
-        self.input.receiveKeyEvent(event.key(), event.type())
-        self.update()
 
 
 def main():

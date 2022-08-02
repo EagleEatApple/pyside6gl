@@ -13,6 +13,8 @@ from geometry.boxGeometry import BoxGeometry
 from material.surfaceMaterial import SurfaceMaterial
 from core.texture import Texture
 from material.textureMaterial import TextureMaterial
+from geometry.rectangleGeometry import RectangleGeometry 
+from extras.textTexture import TextTexture 
 
 
 # render a basic scene
@@ -26,13 +28,22 @@ class Test(Base):
         self.renderer = Renderer(self)
         self.scene = Scene()
         self.camera = Camera(aspectRatio=800 / 600)
-        self.camera.setPosition([0, 0, 4])
+        self.camera.setPosition( [0, 0, 1.5] ) 
+        geometry = RectangleGeometry() 
+        message = TextTexture(text="Python Graphics", 
+                                systemFontName="arial", 
+                                fontSize=32, 
+                                fontColor=(0,0,200),
+                                imageWidth=256, 
+                                imageHeight=256,
+                                alignHorizontal=0.5, 
+                                alignVertical=0.5,
+                                imageBorderWidth=4,
+                                imageBorderColor=(255,0,0)) 
+        material = TextureMaterial(message) 
+        self.mesh = Mesh( geometry, material ) 
+        self.scene.add( self.mesh ) 
 
-        geometry = BoxGeometry()
-        material = SurfaceMaterial(
-            {"useVertexColors": True})
-        self.mesh = Mesh(geometry, material)
-        self.scene.add(self.mesh)
 
     def paintGL(self):
         super().paintGL()
@@ -43,7 +54,7 @@ class Test(Base):
 
 def main():
     app = baseApp(sys.argv)
-    window = Test([800, 600], "Test-template")
+    window = Test([800, 600], "Test-5-7")
     window.show()
     sys.exit(app.exec())
 

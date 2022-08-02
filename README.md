@@ -5,12 +5,47 @@ However, the original code were using Pygame, now I'm trying to port all of the 
 
 If you enjoy the code, please give my repo a star ⭐ ⬆️. 
 
+## Acknowledgement
+
+Thanks Timóteo Alves Cruz so much for putting all original [source code of the book](https://github.com/digitalprogrammer/PYOPENGL/ "Source code of Developing Graphics Frameworks with Python and OpenGL") on Github! 
+
+All images come from Professor Lee Stemkoski's another [repo](https://github.com/stemkoski/Graphics-Framework-Java/ "Images files").
+
 ## Requirements
 
 * PySide6
 * PyOpenGL
+* numpy
+* Pillow
 
 ## Change Log
+
+### `2027-08-2`
+
+Continue to refine the code and take screenshots
+
+Upload more folders and all source code in Chapter 5.
+However, I could not make Test-5-12.py to work after replace Pygame by Pillow.
+
+![screenshot](./screenshot/Test-5-1.png)
+![screenshot](./screenshot/Test-5-2.png)
+![screenshot](./screenshot/Test-5-3.png)
+![screenshot](./screenshot/Test-5-4.png)
+![screenshot](./screenshot/Test-5-5.png)
+![screenshot](./screenshot/Test-5-6.png)
+![screenshot](./screenshot/Test-5-6-1.png)
+![screenshot](./screenshot/Test-5-6-2.png)
+![screenshot](./screenshot/Test-5-6-3.png)
+![screenshot](./screenshot/Test-5-6-4.png)
+![screenshot](./screenshot/Test-5-6-5.png)
+![screenshot](./screenshot/Test-5-6-6.png)
+![screenshot](./screenshot/Test-5-6-7.png)
+![screenshot](./screenshot/Test-5-7.png)
+![screenshot](./screenshot/Test-5-8.png)
+![screenshot](./screenshot/Test-5-9.png)
+![screenshot](./screenshot/Test-5-10.png)
+![screenshot](./screenshot/Test-5-11.png)
+
 
 ### `2027-07-28`
 

@@ -12,14 +12,13 @@ from core.openGLUtils import OpenGLUtils
 from core.attribute import Attribute
 from core.uniform import Uniform
 from core.matrix import Matrix
-from core.input import Input
 
 
 # move a triangle around the screen
 class Test(Base):
     def __init__(self, screenSize=[512, 512], title=""):
         super().__init__(screenSize, title)
-        self.input = Input()
+
 
     def initializeGL(self):
         super().initializeGL()
@@ -76,7 +75,6 @@ class Test(Base):
 
     def paintGL(self):
         super().paintGL()
-        self.input.update()
 
         # update data
         moveAmount = self.moveSpeed * self.deltaTime
@@ -138,13 +136,6 @@ class Test(Base):
         self.modelMatrix.uploadData()
         gl.glDrawArrays(gl.GL_TRIANGLES, 0, self.vertexCount)
 
-    def keyPressEvent(self, event):
-        self.input.receiveKeyEvent(event.key(), event.type())
-        self.update()
-
-    def keyReleaseEvent(self, event):
-        self.input.receiveKeyEvent(event.key(), event.type())
-        self.update()
 
 
 def main():

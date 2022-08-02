@@ -12,20 +12,17 @@ from core.camera import Camera
 from extras.axesHelper import AxesHelper
 from extras.gridHelper import GridHelper
 from extras.movementRig import MovementRig
-from core.input import Input
+
 
 # render axes
-
-
 class Test(Base):
     def __init__(self, screenSize=[512, 512], title=""):
         super().__init__(screenSize, title)
-        self.input = Input()
 
     def initializeGL(self):
         super().initializeGL()
 
-        self.renderer = Renderer()
+        self.renderer = Renderer(self)
         self.scene = Scene()
         self.camera = Camera(aspectRatio=800 / 600)
         self.camera.setPosition([0.5, 1, 5])
@@ -44,20 +41,12 @@ class Test(Base):
 
     def paintGL(self):
         super().paintGL()
-        self.input.update()
 
         # self.mesh.rotateY(0.0514)
         # self.mesh.rotateX(0.0337)
         self.renderer.render(self.scene, self.camera)
         self.rig.update(self.input, self.deltaTime)
 
-    def keyPressEvent(self, event):
-        self.input.receiveKeyEvent(event.key(), event.type())
-        self.update()
-
-    def keyReleaseEvent(self, event):
-        self.input.receiveKeyEvent(event.key(), event.type())
-        self.update()
 
 def main():
     app = baseApp(sys.argv)

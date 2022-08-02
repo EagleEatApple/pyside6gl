@@ -6,7 +6,7 @@ from PySide6.QtCore import Qt
 
 # import local library
 from core.base import Base, baseApp
-from core.input import Input
+
 
 # check input
 
@@ -15,7 +15,7 @@ class Test(Base):
     def __init__(self, screenSize=[512, 512], title=""):
         super().__init__(screenSize, title)
         self.timer.stop()
-        self.input = Input()
+
 
     def initializeGL(self):
         super().initializeGL()
@@ -23,7 +23,7 @@ class Test(Base):
     def paintGL(self):
         super().paintGL()
 
-        self.input.update()
+
 
         # debug printing
         # if len(self.input.keyDownList) > 0:
@@ -39,13 +39,7 @@ class Test(Base):
         if self.input.isKeyPressed(Qt.Key_Right):
             print("The 'right' key is currently being pressed.")
 
-    def keyPressEvent(self, event):
-        self.input.receiveKeyEvent(event.key(), event.type())
-        self.update()
 
-    def keyReleaseEvent(self, event):
-        self.input.receiveKeyEvent(event.key(), event.type())
-        self.update()
 
 
 def main():
