@@ -43,11 +43,9 @@ class Postprocessor(object):
         resolution = self.renderer.windowSize
         target = RenderTarget(resolution)
 
-
         # change the previous entry in the render target list
         #   to this newly created render target
         self.renderTargetList[-1] = target
-
 
         # the effect in this render pass will use
         #   the texture that was written to
@@ -63,7 +61,6 @@ class Postprocessor(object):
 
     def render(self):
         passes = len(self.sceneList)
-        print(passes)
         for n in range(passes):
             scene = self.sceneList[n]
             camera = self.cameraList[n]

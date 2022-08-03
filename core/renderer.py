@@ -5,6 +5,8 @@ from OpenGL.GL import *
 
 # import local library
 from core.mesh import Mesh
+from light.light import Light
+from light.shadow import Shadow
 
 
 class Renderer(object):
@@ -16,14 +18,67 @@ class Renderer(object):
 
         glEnable(GL_BLEND)
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+        self.widget = widget
         self.windowSize = widget.size().toTuple()
+        self.shadowsEnabled = False
 
-    def render(self, scene, camera, clearColor=True, clearDepth=True, renderTarget=None):
+    def enableShadows(self, shadowLight, strength=0.5, resolution=[512, 512]):
+        self.shadowsEnabled = True
+        self.shadowObject = Shadow(shadowLight,
+                                   strength=strength, resolution=resolution)
+
+    def render(self, scene, camera, clearColor=True, clearDepth=True, renderTarget=None, defaultColor=0.15):
+
+        # filter descendents
+        descendantList = scene.getDescendantList()
+        def meshFilter(x): return isinstance(x, Mesh)
+        meshList = list(filter(meshFilter, descendantList))
+
+        # shadow pass
+        if self.shadowsEnabled:
+            # set render target properties
+            glBindFramebuffer(GL_FRAMEBUFFER,
+                              self.shadowObject.renderTarget.framebufferRef)
+            glViewport(0, 0, self.shadowObject.renderTarget.
+                       width, self.shadowObject.renderTarget.height)
+            # set default color to white,
+            # used when no objects present to cast shadows
+            glClearColor(defaultColor, defaultColor, defaultColor, 1)
+            glClear(GL_COLOR_BUFFER_BIT)
+            glClear(GL_DEPTH_BUFFER_BIT)
+            # everything in the scene gets rendered with depthMaterial
+            # so only need to call glUseProgram & set matrices once
+            glUseProgram(self.shadowObject.material.programRef)
+            self.shadowObject.updateInternal()
+
+            for mesh in meshList:
+                # skip invisible meshes
+                if not mesh.visible:
+                    continue
+
+                # only triangle-based meshes cast shadows
+                if mesh.material.settings["drawStyle"] != GL_TRIANGLES:
+                    continue
+
+                # bind VAO
+                glBindVertexArray(mesh.vaoRef)
+
+                # update transform data
+                self.shadowObject.material.uniforms["modelMatrix"].data = mesh.getWorldMatrix(
+                )
+
+                # update uniforms (matrix data) stored in shadow material
+                for varName, unifObj in self.shadowObject.material.uniforms.items():
+                    unifObj.uploadData()
+                glDrawArrays(GL_TRIANGLES, 0, mesh.geometry.vertexCount)
+
         # activate render target
-        #print(self.windowSize)
+        # print(self.windowSize)
         if renderTarget == None:
             # set render target to window
-            #glBindFramebuffer(GL_FRAMEBUFFER, 0)
+            glBindFramebuffer(
+                GL_FRAMEBUFFER, self.widget.defaultFramebufferObject())
+            # print(self.widget.defaultFramebufferObject())
             glViewport(0, 0, self.windowSize[0], self.windowSize[1])
         else:
             # set render target properties
@@ -44,6 +99,12 @@ class Renderer(object):
         def meshFilter(x): return isinstance(x, Mesh)
         meshList = list(filter(meshFilter, descendantList))
 
+        def lightFilter(x): return isinstance(x, Light)
+        lightList = list(filter(lightFilter, descendantList))
+        # scenes support 4 lights; precisely 4 must be present
+        while len(lightList) < 4:
+            lightList.append(Light())
+
         for mesh in meshList:
             # if this object is not visible,
             #  continue to next object in list
@@ -59,6 +120,21 @@ class Renderer(object):
             mesh.material.uniforms["modelMatrix"].data = mesh.getWorldMatrix()
             mesh.material.uniforms["viewMatrix"].data = camera.viewMatrix
             mesh.material.uniforms["projectionMatrix"].data = camera.projectionMatrix
+
+            # if material uses light data, add lights from list
+            if "light0" in mesh.material.uniforms.keys():
+                for lightNumber in range(4):
+                    lightName = "light" + str(lightNumber)
+                    lightObject = lightList[lightNumber]
+                    mesh.material.uniforms[lightName].data = lightObject
+            # add camera position if needed (specular lighting)
+            if "viewPosition" in mesh.material.uniforms.keys():
+                mesh.material.uniforms["viewPosition"].data = camera.getWorldPosition(
+                )
+
+            # add shadow data if enabled and used by shader
+            if self.shadowsEnabled and "shadow0" in mesh.material.uniforms.keys():
+                mesh.material.uniforms["shadow0"].data = self.shadowObject
 
             # update uniforms stored in material
             for variableName, uniformObject in mesh.material.uniforms.items():
