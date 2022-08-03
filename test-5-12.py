@@ -14,9 +14,8 @@ from geometry.rectangleGeometry import RectangleGeometry
 from geometry.sphereGeometry import SphereGeometry
 from material.textureMaterial import TextureMaterial
 from extras.movementRig import MovementRig
-from core.renderTarget import RenderTarget
-from geometry.boxGeometry import BoxGeometry
-from material.surfaceMaterial import SurfaceMaterial
+from extras.postprocessor import Postprocessor
+from effects.tintEffect import TintEffect
 
 
 # render a basic scene
@@ -49,39 +48,23 @@ class Test(Base):
         sphereGeometry = SphereGeometry()
         sphereMaterial = TextureMaterial(Texture("images/grid.png"))
         self.sphere = Mesh(sphereGeometry, sphereMaterial)
-        self.sphere.setPosition([-1.2, 1, 0])
+        self.sphere.setPosition([0, 1, 0])
         self.scene.add(self.sphere)
-        boxGeometry = BoxGeometry(width=2, height=2, depth=0.2)
-        boxMaterial = SurfaceMaterial({"baseColor": [0, 0, 0]})
-        box = Mesh(boxGeometry, boxMaterial)
-        box.setPosition([1.2, 1, 0])
-        self.scene.add(box)
 
-        self.renderTarget = RenderTarget(resolution=[512, 512])
-        screenGeometry = RectangleGeometry(width=1.8, height=1.8)
-        screenMaterial = TextureMaterial(self.renderTarget.texture)
-        screen = Mesh(screenGeometry, screenMaterial)
-        screen.setPosition([1.2, 1, 0.11])
-        self.scene.add(screen)
-
-        self.skyCamera = Camera(aspectRatio=512/512)
-        self.skyCamera.setPosition([0, 10, 0.1])
-        self.skyCamera.lookAt([0, 0, 0])
-        self.scene.add(self.skyCamera)
+        self.postprocessor = Postprocessor(
+            self.renderer, self.scene, self.camera)
+        self.postprocessor.addEffect(TintEffect(tintColor=[1, 0, 0]))
 
     def paintGL(self):
         super().paintGL()
 
-        self.sphere.rotateY(0.01337)
         self.rig.update(self.input, self.deltaTime)
-        self.renderer.render(self.scene, self.skyCamera,
-                             renderTarget=self.renderTarget)
-        self.renderer.render(self.scene, self.camera)
+        self.postprocessor.render()
 
 
 def main():
     app = baseApp(sys.argv)
-    window = Test([800, 600], "Test-5-11")
+    window = Test([800, 600], "Test-5-12")
     window.show()
     sys.exit(app.exec())
 

@@ -7,7 +7,7 @@ If you enjoy the code, please give my repo a star ⭐ ⬆️.
 
 ## Acknowledgement
 
-Thanks Timóteo Alves Cruz so much for putting all original [source code of the book](https://github.com/digitalprogrammer/PYOPENGL/ "Source code of Developing Graphics Frameworks with Python and OpenGL") on Github! 
+Thanks Timóteo Alves Cruz so much for putting all original [source code of the book](https://github.com/digitalprogrammer/PYOPENGL/ "Source code of Developing Graphics Frameworks with Python and OpenGL") except test-6-5.py on Github! 
 
 All images come from Professor Lee Stemkoski's another [repo](https://github.com/stemkoski/Graphics-Framework-Java/ "Images files").
 
@@ -19,6 +19,27 @@ All images come from Professor Lee Stemkoski's another [repo](https://github.com
 * Pillow
 
 ## Change Log
+
+### `2022-08-03`
+
+Finally port all code to PySide6.
+Upload all source code include Chapter 6.
+
+![screenshot](./screenshot/Test-5-12.png)
+![screenshot](./screenshot/Test-5-12-1.png)
+![screenshot](./screenshot/Test-5-12-2.png)
+![screenshot](./screenshot/Test-5-12-3.png)
+![screenshot](./screenshot/Test-5-12-4.png)
+![screenshot](./screenshot/Test-5-12-5.png)
+![screenshot](./screenshot/Test-6-1.png)
+![screenshot](./screenshot/Test-6-2.png)
+![screenshot](./screenshot/Test-6-2-1.png)
+![screenshot](./screenshot/Test-6-3.png)
+![screenshot](./screenshot/Test-6-3-1.png)
+![screenshot](./screenshot/Test-6-3-2.png)
+![screenshot](./screenshot/Test-6-4.png)
+![screenshot](./screenshot/Test-6-5.png)
+
 
 ### `2022-08-02`
 

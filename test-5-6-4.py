@@ -114,7 +114,7 @@ class Test(Base):
 
 def main():
     app = baseApp(sys.argv)
-    window = Test([800, 600], "Test-5-6-3")
+    window = Test([800, 600], "Test-5-6-4")
     window.show()
     sys.exit(app.exec())
 
