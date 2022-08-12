@@ -20,6 +20,11 @@ All images come from Professor Lee Stemkoski's another [repo](https://github.com
 
 ## Change Log
 
+### `2022-08-12`
+
+Review and test all source code (based on pygame) of Developing Graphics Frameworks with Python and OpenGL .
+Then upload them to pygame folder, the code are organized by chapters.
+
 ### `2022-08-03`
 
 Finally port all code to PySide6.

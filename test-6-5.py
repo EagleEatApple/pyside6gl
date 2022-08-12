@@ -61,8 +61,6 @@ class Test(Base):
         sphere2.setPosition([1, 2.2, -0.5])
         self.scene.add(sphere2)
 
-        self.defaultFramebufferObject
-
         self.renderer.enableShadows(self.dirLight)
 
         # optional: render depth texture to mesh in scene
